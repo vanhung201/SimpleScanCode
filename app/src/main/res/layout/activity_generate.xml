@@ -123,27 +123,28 @@
 
     <Button
         android:layout_width="310dp"
-        android:layout_height="36dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/clors_btn"
         android:onClick="generateCodeBtnClick"
         android:text="@string/generate_barcode"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="24sp" />
 
     <Button
         android:layout_width="310dp"
-        android:layout_height="36dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/clors_btn"
+        android:backgroundTint="#4CAF50"
         android:onClick="saveCodeBtnClick"
         android:text="@string/save_barcode"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:textSize="16sp" />
+        android:textSize="24sp" />
 
     <ImageView
         android:id="@+id/barcode_image"

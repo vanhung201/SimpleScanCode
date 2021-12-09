@@ -11,10 +11,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.huawei.hms.ads.AdListener;
+import com.huawei.hms.ads.AdParam;
+import com.huawei.hms.ads.BannerAdSize;
+import com.huawei.hms.ads.HwAds;
+import com.huawei.hms.ads.banner.BannerView;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScan;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
@@ -50,51 +56,30 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
         }
     }
 
-    /**
-     * Call the default view.
-     */
     public void loadScanKitBtnClick(View view) {
         requestPermission(CAMERA_REQ_CODE, DECODE);
     }
 
-    /**
-     * Call the customized view.
-     */
     public void newViewBtnClick(View view) {
         requestPermission(DEFINED_CODE, DECODE);
     }
 
-    /**
-     * Call the bitmap.
-     */
     public void bitmapBtnClick(View view) {
         requestPermission(BITMAP_CODE, DECODE);
     }
 
-    /**
-     * Call the MultiProcessor API in synchronous mode.
-     */
     public void multiProcessorSynBtnClick(View view) {
         requestPermission(MULTIPROCESSOR_SYN_CODE, DECODE);
     }
 
-    /**
-     * Call the MultiProcessor API in asynchronous mode.
-     */
     public void multiProcessorAsynBtnClick(View view) {
         requestPermission(MULTIPROCESSOR_ASYN_CODE, DECODE);
     }
 
-    /**
-     * Start generating the barcode.
-     */
     public void generateQRCodeBtnClick(View view) {
         requestPermission(GENERATE_CODE, GENERATE);
     }
 
-    /**
-     * Apply for permissions.
-     */
     private void requestPermission(int requestCode, int mode) {
         if (mode == DECODE) {
             decodePermission(requestCode);
@@ -103,9 +88,6 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
         }
     }
 
-    /**
-     * Apply for permissions.
-     */
     private void decodePermission(int requestCode) {
         ActivityCompat.requestPermissions(
                 this,
@@ -113,9 +95,6 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
                 requestCode);
     }
 
-    /**
-     * Apply for permissions.
-     */
     private void generatePermission(int requestCode) {
         ActivityCompat.requestPermissions(
                 this,
@@ -123,13 +102,6 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
                 requestCode);
     }
 
-    /**
-     * Call back the permission application result. If the permission application is successful, the barcode scanning view will be displayed.
-     *
-     * @param requestCode   Permission application code.
-     * @param permissions   Permission array.
-     * @param grantResults: Permission application result array.
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (permissions == null || grantResults == null) {
@@ -173,13 +145,6 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
         }
     }
 
-    /**
-     * Event for receiving the activity result.
-     *
-     * @param requestCode Request code.
-     * @param resultCode  Result code.
-     * @param data        Result.
-     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -222,4 +187,6 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
             }
         }
     }
+
+
 }

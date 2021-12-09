@@ -45,12 +45,15 @@
     <string name="mwc_detail">An in-app scanner for 1D and 2D barcodes connects your app to real-world scenarios and helps you build powerful code scanning capabilities with a minimum of 5 lines of code.</string>
     <string name="scan_showresult">Scan results will show on screen</string>
     <string name="title_activity_dis_play">DisPlayActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- splash ad -->
+    <string name="ad_id_splash">testd7c5cewoj6</string>
+    <string name="ad_id_splash_landscape">testq6zq98hecj</string>
+    <string name="owner">HUAWEI Developer</string>
+    <string name="media_name">HUAWEI Ads</string>
+    <string name="copyright_info">Copyright 2021. Huawei Technologies Co., Ltd</string>
+    <string name="status_ad_dismissed">Splash Ad is dismissed.</string>
+
+    <string name="status_load_ad_success">Ad loading state: loaded successfully.</string>
+    <string name="status_load_ad_fail">Ad loading state: failed to be loaded. Error code: </string>
 </resources>
