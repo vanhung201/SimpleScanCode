@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="hung.lv.simplescancode">
+    <!-- permission for WiFi post processing,not for scankit itself -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- camera permission -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- read permission for Bitmap Mode -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- write permission for save QRCODE Bitmap,not for scankit itself -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <queries>
+        <intent>
+            <action android:name="com.huawei.hms.core.aidlservice" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/scan_kit_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SimpleScanCode">
+        <activity android:name=".GenerateCodeActivity"></activity>
+        <activity android:name=".DisPlayMulActivity" />
+        <activity android:name=".DisPlayActivity" />
+        <activity android:name=".DefinedActivity" />
+        <activity android:name=".CommonActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.huawei.hms.client.channel.androidMarket"
+            android:value="false" />
+    </application>
+
+</manifest>
