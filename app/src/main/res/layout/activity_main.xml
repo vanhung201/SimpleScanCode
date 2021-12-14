@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -21,15 +22,28 @@
             android:textSize="34sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tv_accountName"
+            android:layout_width="389dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            android:text="@string/welcome"
+            android:textAlignment="viewEnd"
+            android:textColor="#FB8C00"
+            android:textSize="24sp"
+            android:textStyle="italic" />
+
         <Button
             android:id="@+id/button_scan"
             android:layout_width="310dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/clors_btn"
             android:onClick="newViewBtnClick"
-            android:text="SCAN NOW"
+            android:text="@string/scanNow"
             android:textAllCaps="false"
             android:textColor="#ffffff"
             android:textSize="20sp" />

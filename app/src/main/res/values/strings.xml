@@ -53,7 +53,10 @@
     <string name="media_name">HUAWEI Ads</string>
     <string name="copyright_info">Copyright 2021. Huawei Technologies Co., Ltd</string>
     <string name="status_ad_dismissed">Splash Ad is dismissed.</string>
-
     <string name="status_load_ad_success">Ad loading state: loaded successfully.</string>
     <string name="status_load_ad_fail">Ad loading state: failed to be loaded. Error code: </string>
+
+    <string name="scanNow">SCAN NOW</string>
+    <string name="welcome">Welcome</string>
+    <string name="signOut">Sign Out</string>
 </resources>

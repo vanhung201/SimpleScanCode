@@ -6,27 +6,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import com.huawei.hms.ads.AdListener;
-import com.huawei.hms.ads.AdParam;
-import com.huawei.hms.ads.BannerAdSize;
-import com.huawei.hms.ads.HwAds;
-import com.huawei.hms.ads.banner.BannerView;
-import com.huawei.hms.hmsscankit.ScanUtil;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
+import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.ml.scan.HmsScan;
-import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
+import com.huawei.hms.support.account.service.AccountAuthService;
 
 public class MainActivity extends Activity implements ActivityCompat.OnRequestPermissionsResultCallback {
-    public static final int CAMERA_REQ_CODE = 111;
     public static final int DEFINED_CODE = 222;
     public static final int BITMAP_CODE = 333;
     public static final int MULTIPROCESSOR_SYN_CODE = 444;
@@ -34,11 +30,10 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
     public static final int GENERATE_CODE = 666;
     public static final int DECODE = 1;
     public static final int GENERATE = 2;
-    private static final int REQUEST_CODE_SCAN_ONE = 0X01;
     private static final int REQUEST_CODE_DEFINE = 0X0111;
-    private static final int REQUEST_CODE_SCAN_MULTI = 0X011;
     public static final String DECODE_MODE = "decode_mode";
     public static final String RESULT = "SCAN_RESULT";
+    private TextView accountName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +41,7 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        //Set noTitleBar.
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -54,26 +49,13 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
                 window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             }
         }
-    }
 
-    public void loadScanKitBtnClick(View view) {
-        requestPermission(CAMERA_REQ_CODE, DECODE);
+        accountName = (TextView) findViewById(R.id.tv_accountName);
+        accountName.setText("Welcome " + getIntent().getStringExtra("name"));
     }
 
     public void newViewBtnClick(View view) {
         requestPermission(DEFINED_CODE, DECODE);
-    }
-
-    public void bitmapBtnClick(View view) {
-        requestPermission(BITMAP_CODE, DECODE);
-    }
-
-    public void multiProcessorSynBtnClick(View view) {
-        requestPermission(MULTIPROCESSOR_SYN_CODE, DECODE);
-    }
-
-    public void multiProcessorAsynBtnClick(View view) {
-        requestPermission(MULTIPROCESSOR_ASYN_CODE, DECODE);
     }
 
     public void generateQRCodeBtnClick(View view) {
@@ -116,32 +98,11 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
         if (grantResults.length < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        //Default View Mode
-        if (requestCode == CAMERA_REQ_CODE) {
-            ScanUtil.startScan(this, REQUEST_CODE_SCAN_ONE, new HmsScanAnalyzerOptions.Creator().create());
-        }
+
         //Customized View Mode
         if (requestCode == DEFINED_CODE) {
             Intent intent = new Intent(this, DefinedActivity.class);
             this.startActivityForResult(intent, REQUEST_CODE_DEFINE);
-        }
-        //Bitmap Mode
-        if (requestCode == BITMAP_CODE) {
-            Intent intent = new Intent(this, CommonActivity.class);
-            intent.putExtra(DECODE_MODE, BITMAP_CODE);
-            this.startActivityForResult(intent, REQUEST_CODE_SCAN_MULTI);
-        }
-        //Multiprocessor Synchronous Mode
-        if (requestCode == MULTIPROCESSOR_SYN_CODE) {
-            Intent intent = new Intent(this, CommonActivity.class);
-            intent.putExtra(DECODE_MODE, MULTIPROCESSOR_SYN_CODE);
-            this.startActivityForResult(intent, REQUEST_CODE_SCAN_MULTI);
-        }
-        //Multiprocessor Asynchronous Mode
-        if (requestCode == MULTIPROCESSOR_ASYN_CODE) {
-            Intent intent = new Intent(this, CommonActivity.class);
-            intent.putExtra(DECODE_MODE, MULTIPROCESSOR_ASYN_CODE);
-            this.startActivityForResult(intent, REQUEST_CODE_SCAN_MULTI);
         }
     }
 
@@ -152,33 +113,8 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
         if (resultCode != RESULT_OK || data == null) {
             return;
         }
-        //Default View
-        if (requestCode == REQUEST_CODE_SCAN_ONE) {
-            HmsScan obj = data.getParcelableExtra(ScanUtil.RESULT);
-            if (obj != null) {
-                Intent intent = new Intent(this, DisPlayActivity.class);
-                intent.putExtra(RESULT, obj);
-                startActivity(intent);
-            }
-            //MultiProcessor & Bitmap
-        } else if (requestCode == REQUEST_CODE_SCAN_MULTI) {
-            Parcelable[] obj = data.getParcelableArrayExtra(CommonActivity.SCAN_RESULT);
-            if (obj != null && obj.length > 0) {
-                //Get one result.
-                if (obj.length == 1) {
-                    if (obj[0] != null && !TextUtils.isEmpty(((HmsScan) obj[0]).getOriginalValue())) {
-                        Intent intent = new Intent(this, DisPlayActivity.class);
-                        intent.putExtra(RESULT, obj[0]);
-                        startActivity(intent);
-                    }
-                } else {
-                    Intent intent = new Intent(this, DisPlayMulActivity.class);
-                    intent.putExtra(RESULT, obj);
-                    startActivity(intent);
-                }
-            }
-            //Customized View
-        } else if (requestCode == REQUEST_CODE_DEFINE) {
+
+        if (requestCode == REQUEST_CODE_DEFINE) {
             HmsScan obj = data.getParcelableExtra(DefinedActivity.SCAN_RESULT);
             if (obj != null) {
                 Intent intent = new Intent(this, DisPlayActivity.class);
@@ -187,6 +123,4 @@ public class MainActivity extends Activity implements ActivityCompat.OnRequestPe
             }
         }
     }
-
-
 }
